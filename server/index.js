@@ -33,6 +33,7 @@ async function run() {
 
     const productDB = client.db("smart_db");
     const productsCollection = productDB.collection("products");
+    const bidsCollection = productDB.collection("bids");
 
     app.get("/products", async (req, res) => {
       console.log("calling all products");
@@ -91,6 +92,30 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await productsCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // bids api
+    app.get("/products/:id/bids", async (req, res) => {
+      try {
+        const id = req.params.id;
+
+        // const query = { productId: new ObjectId(id) };
+        const query = { productId: id };
+
+        const bids = await bidsCollection.find(query).toArray();
+
+        res.send(bids);
+      } catch (error) {
+        console.error("Error fetching bids:", error);
+        res.status(500).send({ message: error.message });
+      }
+    });
+
+    app.post("/bids", async (req, res) => {
+      const bidObject = req.body;
+      bidObject.status = "pending";
+      const result = await bidsCollection.insertOne(bidObject);
       res.send(result);
     });
 
