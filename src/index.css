@@ -7,6 +7,7 @@
   name: "mytheme";
   default: true;
   --color-primary: #9f62f2;
+  --color-secondary: #001931;
 }
 
 * {

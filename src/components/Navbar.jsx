@@ -55,8 +55,8 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <Link to={"/"} className="text-3xl text-[#001931] font-bold">
-          Smart<span className="text-[#9F62F2]">Deals</span>
+        <Link to={"/"} className="text-3xl text-secondary font-bold">
+          Smart<span className="text-primary">Deals</span>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">

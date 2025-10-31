@@ -3,6 +3,7 @@ import RootLayoute from "../Layoutes/RootLayoute";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import Home from "../pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +12,8 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h3>Home</h3>,
+        Component: Home,
+        loader: () => fetch("http://localhost:4000/products/latest"),
       },
       {
         path: "products",

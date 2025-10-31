@@ -10,7 +10,7 @@ const RootLayoute = () => {
           <Navbar />
         </nav>
       </header>
-      <main className="container mx-auto h-[90vh] flex justify-center items-center">
+      <main className="container mx-auto ">
         <Outlet />
       </main>
     </div>
