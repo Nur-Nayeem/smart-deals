@@ -1,1 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default;
+}
+@plugin "daisyui/theme" {
+  name: "mytheme";
+  default: true;
+}
+
+* {
+  font-family: "Inter", sans-serif;
+}
+
+.btn-primary {
+  @apply bg-linear-to-r from-[#632EE3] to-[#9F62F2] text-base-100 border-0;
+}
