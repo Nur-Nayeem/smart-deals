@@ -1,7 +1,42 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { use } from "react";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../AuthContext/AuthContext";
 
 const RegisterPage = () => {
+  const { signInWithGoogle, updateUserInfo, signUpUser, user } =
+    use(AuthContext);
+
+  const navigate = useNavigate();
+  const handleGoogleSignIn = () => {
+    signInWithGoogle().then((res) => {
+      console.log(res.user);
+      console.log(user);
+    });
+  };
+
+  const handleCreateAccount = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value.trim();
+    const email = e.target.email.value.trim();
+    const photourl = e.target.photourl.value.trim();
+    const password = e.target.password.value.trim();
+    signUpUser(email, password)
+      .then((res) => {
+        updateUserInfo(name, photourl)
+          .then(() => {
+            console.log(res.user);
+            e.target.reset();
+            navigate("/");
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
   return (
     <div className="mx-auto bg-white p-10 space-y-3.5 rounded-lg">
       <h3 className="text-center text-3xl font-semibold">Register</h3>
@@ -12,14 +47,19 @@ const RegisterPage = () => {
         </Link>
       </p>
       <div>
-        <form className="flex flex-col max-w-md sm:w-md gap-6">
+        <form
+          onSubmit={handleCreateAccount}
+          className="flex flex-col max-w-md sm:w-md gap-6"
+        >
           <div className="flex flex-col space-y-1.5 ">
             <label>Name</label>
             <input
               className="bg-base-200 p-2.5 rounded-lg 
               outline-2 outline-gray-200 focus:outline-primary"
               type="text"
+              name="name"
               placeholder="Name"
+              required
             />
           </div>
           <div className="flex flex-col space-y-1.5 ">
@@ -28,7 +68,9 @@ const RegisterPage = () => {
               className="bg-base-200 p-2.5 rounded-lg 
               outline-2 outline-gray-200 focus:outline-primary"
               type="email"
+              name="email"
               placeholder="Email"
+              required
             />
           </div>
           <div className="flex flex-col space-y-1.5 ">
@@ -37,6 +79,7 @@ const RegisterPage = () => {
               className="bg-base-200 p-2.5 rounded-lg 
               outline-2 outline-gray-200 focus:outline-primary"
               type="text"
+              name="photourl"
               placeholder="Photo URL"
             />
           </div>
@@ -45,7 +88,9 @@ const RegisterPage = () => {
             <input
               className="bg-base-200 p-2.5 rounded-lg outline-2 outline-gray-200 focus:outline-primary"
               type="password"
+              name="password"
               placeholder="Password"
+              required
             />
           </div>
 
@@ -59,7 +104,10 @@ const RegisterPage = () => {
           <hr className="text-gray-300 w-[45%]" />
         </div>
 
-        <button className="btn bg-white text-black border-[#e5e5e5] w-full rounded-lg h-12 text-lg">
+        <button
+          onClick={handleGoogleSignIn}
+          className="btn bg-white text-black border-[#e5e5e5] w-full rounded-lg h-12 text-lg"
+        >
           <svg
             aria-label="Google logo"
             width="20"

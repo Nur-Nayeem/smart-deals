@@ -1,7 +1,14 @@
-import React from "react";
+import React, { use } from "react";
 import { Link } from "react-router";
+import { AuthContext } from "../AuthContext/AuthContext";
 
 const Navbar = () => {
+  const { user, signOutUSer } = use(AuthContext);
+  const handleLogOut = () => {
+    signOutUSer().then(() => {
+      console.log("Logout successfull");
+    });
+  };
   return (
     <div className="navbar container mx-auto">
       <div className="navbar-start">
@@ -33,14 +40,18 @@ const Navbar = () => {
             <li>
               <Link to={"/products"}>All Products</Link>
             </li>
+            {user && (
+              <li>
+                <Link to={"/my-products"}>My Products</Link>
+              </li>
+            )}
+            {user && (
+              <li>
+                <Link to={"/my-bids"}>My Bids</Link>
+              </li>
+            )}
             <li>
-              <Link to={"/my-products"}>My Products</Link>
-            </li>
-            <li>
-              <Link to={"/my-bids"}>My Bids</Link>
-            </li>
-            <li>
-              <Link to={"/create-products"}>Create Products</Link>
+              <Link to={"/create-product"}>Create Product</Link>
             </li>
           </ul>
         </div>
@@ -56,28 +67,46 @@ const Navbar = () => {
           <li>
             <Link to={"/products"}>All Products</Link>
           </li>
+          {user && (
+            <li>
+              <Link to={"/my-products"}>My Products</Link>
+            </li>
+          )}
+          {user && (
+            <li>
+              <Link to={"/my-bids"}>My Bids</Link>
+            </li>
+          )}
           <li>
-            <Link to={"/my-products"}>My Products</Link>
-          </li>
-          <li>
-            <Link to={"/my-bids"}>My Bids</Link>
-          </li>
-          <li>
-            <Link to={"/create-products"}>Create Products</Link>
+            <Link to={"/create-product"}>Create Product</Link>
           </li>
         </ul>
       </div>
-      <div className="navbar-end space-x-3.5">
-        <Link
-          to={"/auth/login"}
-          className="btn bg-base-100 border-[#9F62F2] text-[#9F62F2]"
-        >
-          Login
-        </Link>
-        <Link to={"/auth/register"} className="hidden sm:flex btn btn-primary">
-          Register
-        </Link>
-      </div>
+
+      {!user && (
+        <div className="navbar-end space-x-3.5">
+          <Link
+            to={"/auth/login"}
+            className="btn bg-base-100 border-[#9F62F2] text-primary"
+          >
+            Login
+          </Link>
+          <Link
+            to={"/auth/register"}
+            className="hidden sm:flex btn btn-primary"
+          >
+            Register
+          </Link>
+        </div>
+      )}
+
+      {user && (
+        <div className="navbar-end">
+          <button onClick={handleLogOut} className="btn btn-primary">
+            Log Out
+          </button>
+        </div>
+      )}
     </div>
   );
 };

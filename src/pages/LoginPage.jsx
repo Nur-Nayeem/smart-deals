@@ -1,7 +1,32 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { use } from "react";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../AuthContext/AuthContext";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const { signInWithGoogle, SignInUSer, user } = use(AuthContext);
+  const handleGoogleSignIn = () => {
+    signInWithGoogle().then((res) => {
+      console.log(res.user);
+      console.log(user);
+    });
+  };
+
+  const handleLoginAccount = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value.trim();
+    SignInUSer(email, password)
+      .then((res) => {
+        console.log(res.user);
+        e.target.reset();
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
   return (
     <div className="mx-auto bg-white p-10 space-y-3.5">
       <h3 className="text-center text-3xl font-semibold rounded-lg">Login</h3>
@@ -12,13 +37,17 @@ const LoginPage = () => {
         </Link>
       </p>
       <div>
-        <form className="flex flex-col max-w-md sm:w-md gap-6">
+        <form
+          onSubmit={handleLoginAccount}
+          className="flex flex-col max-w-md sm:w-md gap-6"
+        >
           <div className="flex flex-col space-y-1.5 ">
             <label>Email</label>
             <input
               className="bg-base-200 p-2.5 rounded-lg 
               outline-2 outline-gray-200 focus:outline-primary"
               type="email"
+              name="email"
               placeholder="Email"
             />
           </div>
@@ -27,6 +56,7 @@ const LoginPage = () => {
             <input
               className="bg-base-200 p-2.5 rounded-lg outline-2 outline-gray-200 focus:outline-primary"
               type="password"
+              name="password"
               placeholder="Password"
             />
             <Link className="mt-1" to={"/auth/forget-password"}>
@@ -44,7 +74,10 @@ const LoginPage = () => {
           <hr className="text-gray-300 w-[45%]" />
         </div>
 
-        <button className="btn bg-white text-black border-[#e5e5e5] w-full rounded-lg h-12 text-lg">
+        <button
+          onClick={handleGoogleSignIn}
+          className="btn bg-white text-black border-[#e5e5e5] w-full rounded-lg h-12 text-lg"
+        >
           <svg
             aria-label="Google logo"
             width="20"
