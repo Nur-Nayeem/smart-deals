@@ -4,6 +4,8 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import Home from "../pages/Home";
+import ProductDetails from "../pages/ProductDetails";
+import Products from "../pages/Products";
 
 const router = createBrowserRouter([
   {
@@ -13,11 +15,16 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
-        loader: () => fetch("http://localhost:4000/products/latest"),
       },
       {
         path: "products",
-        element: <h3>Products</h3>,
+        Component: Products,
+      },
+      {
+        path: "products/:id",
+        Component: ProductDetails,
+        loader: ({ params }) =>
+          fetch(`http://localhost:4000/products/${params.id}`),
       },
       {
         path: "my-products",

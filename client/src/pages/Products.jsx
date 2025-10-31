@@ -1,13 +1,11 @@
 import React, { Suspense, use } from "react";
-import { Link } from "react-router";
 import ProductCard from "../components/ProductsComponents/ProductCard";
+const productsPromies = fetch("http://localhost:4000/products").then((res) =>
+  res.json()
+);
 
-const latestProductsPromies = fetch(
-  "http://localhost:4000/latest-products"
-).then((res) => res.json());
-
-const Home = () => {
-  const latestProducts = use(latestProductsPromies);
+const Products = () => {
+  const products = use(productsPromies);
   return (
     <div>
       <div>
@@ -16,19 +14,14 @@ const Home = () => {
         </h2>
         <Suspense fallback={<h3>Loading...</h3>}>
           <div className="grid grid-cols-3 gap-2.5">
-            {latestProducts.map((product) => (
+            {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
         </Suspense>
-        <div className="w-full flex justify-center my-4">
-          <Link to={"/products"} className="btn btn-primary">
-            Show All
-          </Link>
-        </div>
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Products;

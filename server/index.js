@@ -35,12 +35,21 @@ async function run() {
     const productsCollection = productDB.collection("products");
 
     app.get("/products", async (req, res) => {
+      console.log("calling all products");
+
       const cursor = productsCollection.find().sort({ created_at: -1 });
       const result = await cursor.toArray();
       res.send(result);
     });
 
-    app.get("/products/latest", async (req, res) => {
+    app.get("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await productsCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.get("/latest-products", async (req, res) => {
       // // test :
       //   const projectField = { _id: 0, title: 1, price_min: 1, price_max: 1 };
       //   const cursor = productsCollection
@@ -51,18 +60,13 @@ async function run() {
       //     .project(projectField);
 
       //now:
+      console.log("calling latest");
+
       const cursor = productsCollection
         .find()
         .sort({ created_at: -1 })
         .limit(6);
       const result = await cursor.toArray();
-      res.send(result);
-    });
-
-    app.get("/products/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await productsCollection.findOne(query);
       res.send(result);
     });
 
