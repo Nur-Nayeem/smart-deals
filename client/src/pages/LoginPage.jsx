@@ -9,6 +9,7 @@ const LoginPage = () => {
     signInWithGoogle().then((res) => {
       console.log(res.user);
       console.log(user);
+      navigate("/");
     });
   };
 

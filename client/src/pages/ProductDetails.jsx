@@ -5,16 +5,27 @@ import { FaLocationDot } from "react-icons/fa6";
 import { Link } from "react-router";
 import { useLoaderData } from "react-router";
 import BidCard from "../components/ProductsComponents/BidCard";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const ProductDetails = () => {
+  const [bids, setBids] = useState([]);
   const product = useLoaderData();
 
-  const postedDate = new Date(product.created_at).toLocaleDateString();
+  const { _id: productId } = product;
+
+  const postedDate = new Date(product?.created_at).toLocaleDateString();
 
   const modalRef = useRef();
   const openModal = () => {
     modalRef.current.showModal();
   };
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/products/${productId}/bids`)
+      .then((res) => res.json())
+      .then((data) => setBids(data));
+  }, [productId, bids]);
 
   return (
     <div className="bg-gray-100 min-h-screen p-6 md:p-10">
@@ -146,13 +157,13 @@ const ProductDetails = () => {
             >
               I Want Buy This Product
             </button>
-
-            {/* make bid modal */}
-            <dialog ref={modalRef} className="modal modal-middle">
-              <BidCard />
-            </dialog>
+            <BidCard modalRef={modalRef} product={product} />
           </div>
         </div>
+      </div>
+      <div className="mt-10">
+        <h2> Bids For This Products: {bids.length}</h2>
+        <div></div>
       </div>
     </div>
   );
