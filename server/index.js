@@ -59,6 +59,18 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    app.get("/products/my-products", async (req, res) => {
+      const { email } = req.query;
+      const query = {};
+      if (email) {
+        query.seller_email = email;
+        const cursor = productsCollection.find(query).sort({ created_at: -1 });
+        const result = await cursor.toArray();
+        res.send(result);
+      } else {
+        res.send({ message: "No Products found" });
+      }
+    });
 
     app.get("/products/:id", async (req, res) => {
       const id = req.params.id;
@@ -116,8 +128,6 @@ async function run() {
     app.get("/products/:id/bids", async (req, res) => {
       try {
         const id = req.params.id;
-
-        // const query = { productId: new ObjectId(id) };
         const query = { productId: id };
 
         const bids = await bidsCollection.find(query).toArray();
@@ -135,8 +145,24 @@ async function run() {
       if (email) {
         query.buyer_email = email;
       }
+
       const cursor = bidsCollection.find(query);
-      const result = await cursor.toArray();
+      const bids = await cursor.toArray();
+
+      const result = [];
+
+      for (const bid of bids) {
+        const product = await productsCollection.findOne({
+          _id: new ObjectId(bid.productId),
+        });
+
+        result.push({
+          ...bid,
+          productTitle: product?.title || "Unknown Product",
+          price_min: product?.price_min || 0,
+          price_max: product?.price_max || 0,
+        });
+      }
       res.send(result);
     });
 
@@ -144,6 +170,13 @@ async function run() {
       const bidObject = req.body;
       bidObject.status = "pending";
       const result = await bidsCollection.insertOne(bidObject);
+      res.send(result);
+    });
+
+    app.delete("/bids/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await bidsCollection.deleteOne(query);
       res.send(result);
     });
 
