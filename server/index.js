@@ -34,6 +34,23 @@ async function run() {
     const productDB = client.db("smart_db");
     const productsCollection = productDB.collection("products");
     const bidsCollection = productDB.collection("bids");
+    const usersCollection = productDB.collection("users");
+
+    app.post("/users", async (req, res) => {
+      const newUser = req.body;
+      const email = req.body.email;
+      const query = { email: email };
+      const existingUser = await usersCollection.findOne(query);
+
+      if (existingUser) {
+        res.send({
+          message: "user already exits. do not need to insert again",
+        });
+      } else {
+        const result = await usersCollection.insertOne(newUser);
+        res.send(result);
+      }
+    });
 
     app.get("/products", async (req, res) => {
       console.log("calling all products");
@@ -110,6 +127,17 @@ async function run() {
         console.error("Error fetching bids:", error);
         res.status(500).send({ message: error.message });
       }
+    });
+
+    app.get("/bids", async (req, res) => {
+      const { email } = req.query;
+      const query = {};
+      if (email) {
+        query.buyer_email = email;
+      }
+      const cursor = bidsCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
     });
 
     app.post("/bids", async (req, res) => {
