@@ -4,11 +4,16 @@ import { AuthContext } from "../AuthContext/AuthContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { signInWithGoogle, SignInUSer, user } = use(AuthContext);
+  const { signInWithGoogle, SignInUSer } = use(AuthContext);
   const handleGoogleSignIn = () => {
     signInWithGoogle().then((res) => {
-      console.log(res.user);
-      console.log(user);
+      fetch("http://localhost:4000/users", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(res.user),
+      });
       navigate("/");
     });
   };

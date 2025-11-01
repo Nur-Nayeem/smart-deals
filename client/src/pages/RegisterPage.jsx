@@ -3,14 +3,18 @@ import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../AuthContext/AuthContext";
 
 const RegisterPage = () => {
-  const { signInWithGoogle, updateUserInfo, signUpUser, user } =
-    use(AuthContext);
+  const { signInWithGoogle, updateUserInfo, signUpUser } = use(AuthContext);
 
   const navigate = useNavigate();
   const handleGoogleSignIn = () => {
     signInWithGoogle().then((res) => {
-      console.log(res.user);
-      console.log(user);
+      fetch("http://localhost:4000/users", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(res.user),
+      });
       navigate("/");
     });
   };
@@ -25,7 +29,13 @@ const RegisterPage = () => {
       .then((res) => {
         updateUserInfo(name, photourl)
           .then(() => {
-            console.log(res.user);
+            fetch("http://localhost:4000/users", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify(res.user),
+            });
             e.target.reset();
             navigate("/");
           })

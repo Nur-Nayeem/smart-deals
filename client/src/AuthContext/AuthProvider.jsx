@@ -20,6 +20,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const updateUserInfo = (name, photourl) => {
+    setLoading(true);
     return updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photourl,
@@ -53,7 +54,6 @@ const AuthProvider = ({ children }) => {
     SignInUSer,
     signInWithGoogle,
     signOutUSer,
-
     user,
     loading,
   };
