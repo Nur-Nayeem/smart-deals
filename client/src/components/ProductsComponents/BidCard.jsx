@@ -1,8 +1,8 @@
 import React from "react";
 import { use } from "react";
 import Swal from "sweetalert2";
-import { AuthContext } from "../../AuthContext/AuthContext";
 import { useRef } from "react";
+import { AuthContext } from "../../Context/Context";
 
 const BidCard = ({ modalRef, product }) => {
   const { user } = use(AuthContext);

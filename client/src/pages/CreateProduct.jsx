@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router";
+import { AuthContext } from "../Context/Context";
 
 const CreateProduct = () => {
+  const { user } = use(AuthContext);
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -11,10 +13,10 @@ const CreateProduct = () => {
     condition: "Brand New",
     usage: "",
     image: "",
-    seller_name: "",
-    seller_email: "",
+    seller_name: user?.displayName || "",
+    seller_email: user?.email || "",
     seller_contact: "",
-    seller_image: "",
+    seller_image: user?.photoURL || "",
     location: "",
     description: "",
   });

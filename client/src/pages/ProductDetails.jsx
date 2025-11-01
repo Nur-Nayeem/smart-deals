@@ -1,4 +1,4 @@
-import React, { use, useRef } from "react";
+import React, { useRef } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
@@ -8,12 +8,10 @@ import BidCard from "../components/ProductsComponents/BidCard";
 import { useEffect } from "react";
 import { useState } from "react";
 import BidsTable from "../components/bidsComponents/BidsTable";
-import { AuthContext } from "../AuthContext/AuthContext";
 
 const ProductDetails = () => {
   const [bids, setBids] = useState([]);
   const product = useLoaderData();
-  const { loading } = use(AuthContext);
 
   const {
     _id: productId,
@@ -37,7 +35,7 @@ const ProductDetails = () => {
     fetch(`http://localhost:4000/products/${productId}/bids`)
       .then((res) => res.json())
       .then((data) => setBids(data));
-  }, [productId, bids]);
+  }, [productId]);
 
   const postedDate = new Date(product?.created_at).toLocaleDateString();
 
@@ -45,10 +43,6 @@ const ProductDetails = () => {
   const openModal = () => {
     modalRef.current.showModal();
   };
-
-  if (loading) {
-    return <h2>Loading...</h2>;
-  }
 
   return (
     <div className="bg-gray-100 min-h-screen p-6 md:p-10">
@@ -184,7 +178,7 @@ const ProductDetails = () => {
             bids={bids}
             title={title}
             price_max={price_max}
-            image={image}
+            price_min={price_max}
           />
         </div>
       </div>

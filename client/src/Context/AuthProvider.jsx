@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./Context";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,

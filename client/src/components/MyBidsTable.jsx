@@ -1,7 +1,21 @@
 import React from "react";
 
-const BidsTable = ({ bids, title, price_max, price_min }) => {
-  console.log(bids);
+const MyBidsTable = ({ myBids, setMyBids }) => {
+  const handleBidDelete = (id) => {
+    fetch(`http://localhost:4000/bids/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        const filterdBid = myBids.filter((bid) => bid._id !== id);
+        setMyBids(filterdBid);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+  console.log(myBids);
 
   return (
     <div className="overflow-x-auto bg-base-100 rounded-lg">
@@ -13,10 +27,11 @@ const BidsTable = ({ bids, title, price_max, price_min }) => {
             <th>Buyer</th>
             <th>Bid Price</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {bids.map((bid, index) => (
+          {myBids.map((bid, index) => (
             <tr key={index}>
               <th>{index + 1}</th>
               <td>
@@ -34,10 +49,10 @@ const BidsTable = ({ bids, title, price_max, price_min }) => {
                     </div>
                   </div>
                   <div>
-                    <div className="font-bold">{title}</div>
+                    <div className="font-bold">{bid?.productTitle}</div>
                     <div className="text-sm opacity-50">
                       <span>
-                        {price_min} - {price_max}
+                        {bid?.price_min} - {bid?.price_max}
                       </span>
                     </div>
                   </div>
@@ -52,6 +67,14 @@ const BidsTable = ({ bids, title, price_max, price_min }) => {
               <td>
                 <span className="">{bid.status}</span>
               </td>
+              <td>
+                <button
+                  onClick={() => handleBidDelete(bid._id)}
+                  className="btn bg-base-100 rounded-lg border-red-600 text-rose-600"
+                >
+                  Remove Bid
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -60,4 +83,4 @@ const BidsTable = ({ bids, title, price_max, price_min }) => {
   );
 };
 
-export default BidsTable;
+export default MyBidsTable;

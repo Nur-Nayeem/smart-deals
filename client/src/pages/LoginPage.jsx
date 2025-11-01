@@ -1,6 +1,6 @@
 import React, { use } from "react";
 import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../AuthContext/AuthContext";
+import { AuthContext } from "../Context/Context";
 
 const LoginPage = () => {
   const navigate = useNavigate();

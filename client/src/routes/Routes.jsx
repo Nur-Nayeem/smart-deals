@@ -8,6 +8,7 @@ import ProductDetails from "../pages/ProductDetails";
 import Products from "../pages/Products";
 import MyBids from "../pages/MyBids";
 import CreateProduct from "../pages/CreateProduct";
+import MyProducts from "../pages/MyProducts";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
         path: "my-products",
         element: (
           <PrivateRoute>
-            <h3>My Products</h3>
+            <MyProducts />
           </PrivateRoute>
         ),
       },

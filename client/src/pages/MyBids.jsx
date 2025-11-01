@@ -1,6 +1,6 @@
 import React, { use, useEffect, useState } from "react";
-import { AuthContext } from "../AuthContext/AuthContext";
-import BidsTable from "../components/bidsComponents/BidsTable";
+import { AuthContext } from "../Context/Context";
+import MyBidsTable from "../components/MyBidsTable";
 
 const MyBids = () => {
   const { user, loading } = use(AuthContext);
@@ -14,7 +14,13 @@ const MyBids = () => {
   if (loading) return <h2>loading...</h2>;
   return (
     <div>
-      <BidsTable bids={myBids} />
+      <MyBidsTable
+        myBids={myBids}
+        setMyBids={setMyBids}
+        title={"product 1"}
+        price_max={40}
+        price_min={30}
+      />
     </div>
   );
 };
