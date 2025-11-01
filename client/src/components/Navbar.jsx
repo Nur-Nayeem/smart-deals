@@ -1,5 +1,5 @@
 import React, { use } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { AuthContext } from "../Context/Context";
 
 const Navbar = () => {
@@ -35,23 +35,23 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <Link to={"/"}>Home</Link>
+              <NavLink to={"/"}>Home</NavLink>
             </li>
             <li>
-              <Link to={"/products"}>All Products</Link>
+              <NavLink to={"/products"}>All Products</NavLink>
             </li>
             {user && (
               <li>
-                <Link to={"/my-products"}>My Products</Link>
+                <NavLink to={"/my-products"}>My Products</NavLink>
               </li>
             )}
             {user && (
               <li>
-                <Link to={"/my-bids"}>My Bids</Link>
+                <NavLink to={"/my-bids"}>My Bids</NavLink>
               </li>
             )}
             <li>
-              <Link to={"/create-product"}>Create Product</Link>
+              <NavLink to={"/create-product"}>Create Product</NavLink>
             </li>
           </ul>
         </div>
@@ -62,23 +62,23 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to={"/"}>Home</Link>
+            <NavLink to={"/"}>Home</NavLink>
           </li>
           <li>
-            <Link to={"/products"}>All Products</Link>
+            <NavLink to={"/products"}>All Products</NavLink>
           </li>
           {user && (
             <li>
-              <Link to={"/my-products"}>My Products</Link>
+              <NavLink to={"/my-products"}>My Products</NavLink>
             </li>
           )}
           {user && (
             <li>
-              <Link to={"/my-bids"}>My Bids</Link>
+              <NavLink to={"/my-bids"}>My Bids</NavLink>
             </li>
           )}
           <li>
-            <Link to={"/create-product"}>Create Product</Link>
+            <NavLink to={"/create-product"}>Create Product</NavLink>
           </li>
         </ul>
       </div>

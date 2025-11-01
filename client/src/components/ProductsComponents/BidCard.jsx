@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { useRef } from "react";
 import { AuthContext } from "../../Context/Context";
 
-const BidCard = ({ modalRef, product }) => {
+const BidCard = ({ modalRef, product, bids, setBids }) => {
   const { user } = use(AuthContext);
   const imageurlRef = useRef();
   const priceRef = useRef();
@@ -27,6 +27,7 @@ const BidCard = ({ modalRef, product }) => {
       buyer_image: imageurl,
       bid_price: price,
       buyer_contact: contact,
+      status: "pending",
     };
     console.log(bidObject);
 
@@ -42,6 +43,7 @@ const BidCard = ({ modalRef, product }) => {
         if (data.insertedId) {
           console.log("submitted bid");
           resetField();
+          setBids([...bids, bidObject]);
           modalRef.current.close();
           Swal.fire({
             title: "Bid Submitted Succefully!",

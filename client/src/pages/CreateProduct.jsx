@@ -1,9 +1,11 @@
 import React, { use, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Context/Context";
+import Swal from "sweetalert2";
 
 const CreateProduct = () => {
+  const navigate = useNavigate();
   const { user } = use(AuthContext);
   const [formData, setFormData] = useState({
     title: "",
@@ -30,10 +32,10 @@ const CreateProduct = () => {
       condition: "Brand New",
       usage: "",
       image: "",
-      seller_name: "",
-      seller_email: "",
+      seller_name: user?.displayName || "",
+      seller_email: user?.email || "",
       seller_contact: "",
-      seller_image: "",
+      seller_image: user?.photoURL || "",
       location: "",
       description: "",
     });
@@ -56,7 +58,13 @@ const CreateProduct = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        Swal.fire({
+          title: "Successfully created product!",
+          icon: "success",
+          draggable: true,
+        });
         resetFields();
+        navigate("/my-products");
       })
       .catch((err) => {
         console.log(err.message);

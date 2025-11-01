@@ -167,7 +167,12 @@ const ProductDetails = () => {
             >
               I Want Buy This Product
             </button>
-            <BidCard modalRef={modalRef} product={product} />
+            <BidCard
+              modalRef={modalRef}
+              product={product}
+              bids={bids}
+              setBids={setBids}
+            />
           </div>
         </div>
       </div>

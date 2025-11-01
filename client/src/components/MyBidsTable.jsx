@@ -1,21 +1,38 @@
 import React from "react";
+import Swal from "sweetalert2";
 
 const MyBidsTable = ({ myBids, setMyBids }) => {
   const handleBidDelete = (id) => {
-    fetch(`http://localhost:4000/bids/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        const filterdBid = myBids.filter((bid) => bid._id !== id);
-        setMyBids(filterdBid);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:4000/bids/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            const filterdBid = myBids.filter((bid) => bid._id !== id);
+            setMyBids(filterdBid);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Bid has been deleted.",
+          icon: "success",
+        });
+      }
+    });
   };
-  console.log(myBids);
 
   return (
     <div className="overflow-x-auto bg-base-100 rounded-lg">

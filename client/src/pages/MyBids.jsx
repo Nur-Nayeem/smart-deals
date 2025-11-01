@@ -12,15 +12,27 @@ const MyBids = () => {
       .then((data) => setMyBids(data));
   }, [email]);
   if (loading) return <h2>loading...</h2>;
+  if (myBids.length < 1) {
+    return (
+      <h2 className="text-center text-3xl font-bold text-secondary my-4">
+        No Bids Found
+      </h2>
+    );
+  }
   return (
     <div>
-      <MyBidsTable
-        myBids={myBids}
-        setMyBids={setMyBids}
-        title={"product 1"}
-        price_max={40}
-        price_min={30}
-      />
+      <h2 className="text-center text-3xl font-bold text-secondary my-4">
+        My Bids: <span className="text-primary">{myBids.length}</span>
+      </h2>
+      <div>
+        <MyBidsTable
+          myBids={myBids}
+          setMyBids={setMyBids}
+          title={"product 1"}
+          price_max={40}
+          price_min={30}
+        />
+      </div>
     </div>
   );
 };
