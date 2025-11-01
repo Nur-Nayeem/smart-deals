@@ -7,6 +7,7 @@ import Home from "../pages/Home";
 import ProductDetails from "../pages/ProductDetails";
 import Products from "../pages/Products";
 import MyBids from "../pages/MyBids";
+import CreateProduct from "../pages/CreateProduct";
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
         path: "create-product",
         element: (
           <PrivateRoute>
-            <h3>Create Product</h3>
+            <CreateProduct />
           </PrivateRoute>
         ),
       },
