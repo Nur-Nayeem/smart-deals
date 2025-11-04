@@ -6,10 +6,35 @@ const MyBids = () => {
   const { user, loading } = use(AuthContext);
   const [myBids, setMyBids] = useState([]);
   const { email } = user;
+
+  // const accessToken = user.accessToken; //firebase
+
+  // const jwtTokenSendFromLocalStorage = localStorage.getItem("token"); //using local storage is not a good use
+
+  ////use this for firebasse acces token and jwt raw token with localstorage for example:
+  // useEffect(() => {
+  //   fetch(`http://localhost:4000/bids?email=${email}`, {
+  //     headers: {
+  //       authorization: `Bearer ${jwtTokenSendFromLocalStorage}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => setMyBids(data))
+  //     .catch((err) => {
+  //       console.log("error", err);
+  //     });
+  // }, [email, jwtTokenSendFromLocalStorage]);
+
+  //in http only cookie methdo
   useEffect(() => {
-    fetch(`http://localhost:4000/bids?email=${email}`)
+    fetch(`http://localhost:4000/bids?email=${email}`, {
+      credentials: "include", //use credentials ="include"
+    })
       .then((res) => res.json())
-      .then((data) => setMyBids(data));
+      .then((data) => setMyBids(data))
+      .catch((err) => {
+        console.log("error", err);
+      });
   }, [email]);
   if (loading) return <h2>loading...</h2>;
   if (myBids.length < 1) {
