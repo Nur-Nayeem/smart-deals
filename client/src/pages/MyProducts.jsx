@@ -3,26 +3,35 @@ import { AuthContext, ProductsContext } from "../Context/Context";
 import Swal from "sweetalert2";
 import { SiTicktick } from "react-icons/si";
 import Loading from "../components/Loading";
+import useAxios from "../hooks/useAxios";
+import { Link } from "react-router";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const MyProducts = () => {
   const [myProducts, setMyproducts] = useState([]);
-
+  const axiosInstanceSecure = useAxiosSecure();
   const { user } = use(AuthContext);
   const { products, setProducts } = use(ProductsContext);
   const [myProductLoading, setMyProductLoading] = useState(true);
+  const axiosInstanse = useAxios();
 
   useEffect(() => {
-    fetch(`http://localhost:4000/products/my-products?email=${user?.email}`)
-      .then((res) => res.json())
+    //using axios:
+    axiosInstanse
+      .get(`/products/my-products?email=${user?.email}`)
       .then((data) => {
-        setMyproducts(data);
+        setMyproducts(data.data);
         setMyProductLoading(false);
       })
       .catch((err) => {
         setMyProductLoading(false);
-        console.log(err.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err,
+        });
       });
-  }, [user?.email]);
+  }, [user?.email, axiosInstanse]);
 
   const handleBidDelete = (id) => {
     Swal.fire({
@@ -35,27 +44,28 @@ const MyProducts = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:4000/products/${id}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
+        axiosInstanceSecure
+          .delete(`/products/${id}`)
+          .then(() => {
             const filterProducts = myProducts.filter(
               (product) => product._id !== id
             );
             setMyproducts(filterProducts);
             const filterAllProducts = products.filter((p) => p._id !== id);
             setProducts(filterAllProducts);
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your Product has been deleted.",
+              icon: "success",
+            });
           })
           .catch((err) => {
-            console.log(err);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: err,
+            });
           });
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your Product has been deleted.",
-          icon: "success",
-        });
       }
     });
   };
@@ -71,29 +81,26 @@ const MyProducts = () => {
       confirmButtonText: "Yes, Sell it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:4000/products/${id}`, {
-          method: "PATCH",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ status: "sold" }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
+        axiosInstanceSecure
+          .patch(`/products/${id}`, { status: "sold" })
+          .then(() => {
             const updated = myProducts.map((product) =>
               product._id === id ? { ...product, status: "sold" } : product
             );
             setMyproducts(updated);
+            Swal.fire({
+              title: "Sold!",
+              text: "Your Product has been Sold.",
+              icon: "success",
+            });
           })
           .catch((err) => {
-            console.log(err);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: err,
+            });
           });
-        Swal.fire({
-          title: "Sold!",
-          text: "Your Product has been Sold.",
-          icon: "success",
-        });
       }
     });
   };
@@ -163,12 +170,12 @@ const MyProducts = () => {
                     </div>
                   </td>
                   <td className="flex space-x-2">
-                    <button
-                      onClick={() => alert("feature is comming...")}
+                    <Link
+                      to={`update-product/${product._id}`}
                       className="btn bg-base-100 rounded-lg border-primary text-primary"
                     >
                       Edit
-                    </button>
+                    </Link>
                     <button
                       onClick={() => handleBidDelete(product._id)}
                       className="btn bg-base-100 rounded-lg border-red-600 text-rose-600"

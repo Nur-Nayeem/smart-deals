@@ -10,6 +10,7 @@ import MyBids from "../pages/MyBids";
 import CreateProduct from "../pages/CreateProduct";
 import MyProducts from "../pages/MyProducts";
 import Loading from "../components/Loading";
+import UpdateProduct from "../pages/UpdateProduct";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,14 @@ const router = createBrowserRouter([
           fetch(`http://localhost:4000/products/${params.id}`),
       },
       {
+        path: "create-product",
+        element: (
+          <PrivateRoute>
+            <CreateProduct />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "my-products",
         element: (
           <PrivateRoute>
@@ -43,6 +52,17 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "my-products/update-product/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateProduct />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:4000/products/${params.id}`),
+      },
+
+      {
         path: "my-bids",
         element: (
           <PrivateRoute>
@@ -50,14 +70,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "create-product",
-        element: (
-          <PrivateRoute>
-            <CreateProduct />
-          </PrivateRoute>
-        ),
-      },
+
       {
         path: "auth/login",
         Component: LoginPage,
