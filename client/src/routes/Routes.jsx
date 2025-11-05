@@ -9,6 +9,7 @@ import Products from "../pages/Products";
 import MyBids from "../pages/MyBids";
 import CreateProduct from "../pages/CreateProduct";
 import MyProducts from "../pages/MyProducts";
+import Loading from "../components/Loading";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,6 @@ const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(`http://localhost:4000/products/${params.id}`),
-        hydrateFallbackElement: <h2>Loading...</h2>,
       },
       {
         path: "my-products",
@@ -67,6 +67,7 @@ const router = createBrowserRouter([
         Component: RegisterPage,
       },
     ],
+    hydrateFallbackElement: <Loading />,
   },
 ]);
 

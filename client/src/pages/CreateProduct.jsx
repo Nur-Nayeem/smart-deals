@@ -1,12 +1,12 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../Context/Context";
 import Swal from "sweetalert2";
+import useAuth from "../hooks/useAuth";
 
 const CreateProduct = () => {
   const navigate = useNavigate();
-  const { user } = use(AuthContext);
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     title: "",
     category: "",

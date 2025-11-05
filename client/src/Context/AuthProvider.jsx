@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
     });
 
     return () => unSubscribe();
-  }, [user]);
+  }, []);
 
   const userInfo = {
     signUpUser,

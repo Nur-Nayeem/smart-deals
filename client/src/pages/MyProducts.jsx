@@ -2,17 +2,26 @@ import React, { use, useEffect, useState } from "react";
 import { AuthContext, ProductsContext } from "../Context/Context";
 import Swal from "sweetalert2";
 import { SiTicktick } from "react-icons/si";
+import Loading from "../components/Loading";
 
 const MyProducts = () => {
   const [myProducts, setMyproducts] = useState([]);
 
   const { user } = use(AuthContext);
   const { products, setProducts } = use(ProductsContext);
+  const [myProductLoading, setMyProductLoading] = useState(true);
 
   useEffect(() => {
     fetch(`http://localhost:4000/products/my-products?email=${user?.email}`)
       .then((res) => res.json())
-      .then((data) => setMyproducts(data));
+      .then((data) => {
+        setMyproducts(data);
+        setMyProductLoading(false);
+      })
+      .catch((err) => {
+        setMyProductLoading(false);
+        console.log(err.message);
+      });
   }, [user?.email]);
 
   const handleBidDelete = (id) => {
@@ -88,6 +97,10 @@ const MyProducts = () => {
       }
     });
   };
+
+  if (myProductLoading) {
+    return <Loading />;
+  }
 
   if (myProducts.length < 1) {
     return (

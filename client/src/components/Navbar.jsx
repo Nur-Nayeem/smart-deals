@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router";
 import { AuthContext } from "../Context/Context";
 
 const Navbar = () => {
-  const { user, signOutUSer } = use(AuthContext);
+  const { user, signOutUSer, loading } = use(AuthContext);
   const handleLogOut = () => {
     signOutUSer().then(() => {
       console.log("Logout successfull");
@@ -83,7 +83,13 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {!user && (
+      {loading && (
+        <div className="navbar-end space-x-3.5">
+          <span className="loading loading-spinner loading-sm text-primary"></span>
+        </div>
+      )}
+
+      {!user && !loading && (
         <div className="navbar-end space-x-3.5">
           <Link
             to={"/auth/login"}

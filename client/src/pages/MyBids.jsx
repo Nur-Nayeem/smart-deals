@@ -1,10 +1,12 @@
 import React, { use, useEffect, useState } from "react";
 import { AuthContext } from "../Context/Context";
 import MyBidsTable from "../components/MyBidsTable";
+import Loading from "../components/Loading";
 
 const MyBids = () => {
-  const { user, loading } = use(AuthContext);
+  const { user } = use(AuthContext);
   const [myBids, setMyBids] = useState([]);
+  const [myBidsLoading, setMyBidsLoading] = useState(true);
   const { email } = user;
 
   // const accessToken = user.accessToken; //firebase
@@ -31,12 +33,16 @@ const MyBids = () => {
       credentials: "include", //use credentials ="include"
     })
       .then((res) => res.json())
-      .then((data) => setMyBids(data))
+      .then((data) => {
+        setMyBids(data);
+        setMyBidsLoading(false);
+      })
       .catch((err) => {
         console.log("error", err);
       });
   }, [email]);
-  if (loading) return <h2>loading...</h2>;
+  if (myBidsLoading) return <Loading />;
+
   if (myBids.length < 1) {
     return (
       <h2 className="text-center text-3xl font-bold text-secondary my-4">
