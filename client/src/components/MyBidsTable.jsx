@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import Swal from "sweetalert2";
 
@@ -13,17 +14,18 @@ const MyBidsTable = ({ myBids, setMyBids }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:4000/bids/${id}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
+        axios
+          .delete(`http://localhost:4000/bids/${id}`)
+          .then(() => {
             const filterdBid = myBids.filter((bid) => bid._id !== id);
             setMyBids(filterdBid);
           })
           .catch((err) => {
-            console.log(err.message);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: err.message,
+            });
           });
         Swal.fire({
           title: "Deleted!",

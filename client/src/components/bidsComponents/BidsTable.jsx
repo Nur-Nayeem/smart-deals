@@ -1,8 +1,6 @@
 import React from "react";
 
 const BidsTable = ({ bids, title, price_max, price_min }) => {
-  console.log(bids);
-
   return (
     <div className="overflow-x-auto bg-base-100 rounded-lg">
       <table className="table">

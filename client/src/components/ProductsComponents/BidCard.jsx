@@ -3,8 +3,10 @@ import { use } from "react";
 import Swal from "sweetalert2";
 import { useRef } from "react";
 import { AuthContext } from "../../Context/Context";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const BidCard = ({ modalRef, product, bids, setBids }) => {
+  const axiosInstanceSecure = useAxiosSecure();
   const { user } = use(AuthContext);
   const imageurlRef = useRef();
   const priceRef = useRef();
@@ -29,29 +31,18 @@ const BidCard = ({ modalRef, product, bids, setBids }) => {
       buyer_contact: contact,
       status: "pending",
     };
-    console.log(bidObject);
 
-    fetch("http://localhost:4000/bids", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(bidObject),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.insertedId) {
-          console.log("submitted bid");
-          resetField();
-          setBids([...bids, bidObject]);
-          modalRef.current.close();
-          Swal.fire({
-            title: "Bid Submitted Succefully!",
-            icon: "success",
-            draggable: true,
-          });
-        }
-      });
+    axiosInstanceSecure.post("/bids", bidObject).then((data) => {
+      if (data.data.insertedId) {
+        resetField();
+        setBids([...bids, bidObject]);
+        modalRef.current.close();
+        Swal.fire({
+          title: "Bid Submitted Succefully!",
+          icon: "success",
+        });
+      }
+    });
   };
 
   return (

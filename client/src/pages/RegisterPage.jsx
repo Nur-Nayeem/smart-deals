@@ -1,12 +1,21 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Context/Context";
+import Loading from "../components/Loading";
 
 const RegisterPage = () => {
-  const { signInWithGoogle, updateUserInfo, signUpUser } = use(AuthContext);
+  const {
+    signInWithGoogle,
+    updateUserInfo,
+    signUpUser,
+    authError,
+    setAuthError,
+  } = use(AuthContext);
+  const [loadingReg, setLoadingReg] = useState(false);
 
   const navigate = useNavigate();
   const handleGoogleSignIn = () => {
+    setAuthError("");
     signInWithGoogle().then((res) => {
       fetch("http://localhost:4000/users", {
         method: "POST",
@@ -21,6 +30,8 @@ const RegisterPage = () => {
 
   const handleCreateAccount = (e) => {
     e.preventDefault();
+    setAuthError("");
+    setLoadingReg(true);
     const name = e.target.name.value.trim();
     const email = e.target.email.value.trim();
     const photourl = e.target.photourl.value.trim();
@@ -36,15 +47,18 @@ const RegisterPage = () => {
               },
               body: JSON.stringify(res.user),
             });
+            setLoadingReg(false);
             e.target.reset();
             navigate("/");
           })
           .catch((err) => {
-            console.log(err.message);
+            setLoadingReg(false);
+            setAuthError(err.message);
           });
       })
       .catch((error) => {
-        console.log(error.message);
+        setLoadingReg(false);
+        setAuthError(error.message);
       });
   };
 
@@ -106,8 +120,14 @@ const RegisterPage = () => {
               />
             </div>
 
+            <p className="text-error">{authError}</p>
+
             <button className="btn bg-primary text-base-100 rounded-lg text-lg h-12">
-              Register
+              {loadingReg ? (
+                <span className="loading loading-spinner loading-xl text-base-100"></span>
+              ) : (
+                <span>Register</span>
+              )}
             </button>
           </form>
           <div className="flex items-center justify-between my-5">

@@ -2,10 +2,11 @@ import React, { Suspense, use } from "react";
 import { Link } from "react-router";
 import ProductCard from "../components/ProductsComponents/ProductCard";
 import Loading from "../components/Loading";
+import axios from "axios";
 
-const latestProductsPromise = fetch(
-  "http://localhost:4000/latest-products"
-).then((res) => res.json());
+const latestProductsPromise = axios
+  .get("http://localhost:4000/latest-products")
+  .then((data) => data.data);
 
 const LatestProducts = () => {
   const latestProducts = use(latestProductsPromise);

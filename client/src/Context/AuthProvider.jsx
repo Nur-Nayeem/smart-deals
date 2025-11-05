@@ -9,10 +9,15 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth, googleProvider } from "../firebase/firebase.config";
+// import useAxiosSecure from "../hooks/useAxiosSecure";
+// import useAxios from "../hooks/useAxios";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState("");
+  // const axiosInstanse = useAxiosSecure();
+  // const axiosInstance = useAxios();
 
   const signUpUser = (email, password) => {
     setLoading(true);
@@ -37,29 +42,28 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
   const signOutUSer = () => {
-    localStorage.removeItem("token");
+    // localStorage.removeItem("token"); when we use local storage to store jwt token
     return signOut(auth);
   };
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      if (currentUser) {
-        const loggedUser = { email: currentUser.email };
-        fetch(`http://localhost:4000/getToken`, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(loggedUser),
-          credentials: "include", //  send and receive cookies
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("after logged in, the token is:", data);
-            //// localStorage.setItem("token", data.token);
-          });
-      }
+
+      // if (currentUser) { ////for jwt token storing http only cookie
+      //   const loggedUser = { email: currentUser.email };
+      //   axiosInstanse.post("/getToken", loggedUser).then((data) => {
+      //     console.log("after logged in, the token is:", data.data);
+      //   });
+      // }
+      // if (currentUser) {
+      //   //for jwt token store local storage
+      //   const loggedUser = { email: currentUser.email };
+      //   axiosInstance.post("/getToken", loggedUser).then((data) => {
+      //     localStorage.setItem("token", data.data.token);
+      //     console.log("after logged in, the token is:", data.data.token);
+      //   });
+      // }
       setLoading(false);
     });
 
@@ -74,6 +78,9 @@ const AuthProvider = ({ children }) => {
     signOutUSer,
     user,
     loading,
+    setLoading,
+    authError,
+    setAuthError,
   };
 
   return <AuthContext value={userInfo}>{children}</AuthContext>;

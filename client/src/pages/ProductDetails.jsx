@@ -8,8 +8,10 @@ import BidCard from "../components/ProductsComponents/BidCard";
 import { useEffect } from "react";
 import { useState } from "react";
 import BidsTable from "../components/bidsComponents/BidsTable";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const ProductDetails = () => {
+  const axiosSecureInstance = useAxiosSecure();
   const [bids, setBids] = useState([]);
   const product = useLoaderData();
 
@@ -32,10 +34,10 @@ const ProductDetails = () => {
   } = product;
 
   useEffect(() => {
-    fetch(`http://localhost:4000/products/${productId}/bids`)
-      .then((res) => res.json())
-      .then((data) => setBids(data));
-  }, [productId]);
+    axiosSecureInstance
+      .get(`/products/${productId}/bids`)
+      .then((data) => setBids(data.data));
+  }, [productId, axiosSecureInstance]);
 
   const postedDate = new Date(product?.created_at).toLocaleDateString();
 

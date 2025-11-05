@@ -2,12 +2,15 @@ import React, { use, useEffect, useState } from "react";
 import { AuthContext } from "../Context/Context";
 import MyBidsTable from "../components/MyBidsTable";
 import Loading from "../components/Loading";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const MyBids = () => {
   const { user } = use(AuthContext);
   const [myBids, setMyBids] = useState([]);
   const [myBidsLoading, setMyBidsLoading] = useState(true);
   const { email } = user;
+  const axiosInstanseSecure = useAxiosSecure();
 
   // const accessToken = user.accessToken; //firebase
 
@@ -27,20 +30,38 @@ const MyBids = () => {
   //     });
   // }, [email, jwtTokenSendFromLocalStorage]);
 
-  //in http only cookie methdo
+  // //in http only cookie methdo with fetch
+  // useEffect(() => {
+  //   fetch(`http://localhost:4000/bids?email=${email}`, {
+  //     credentials: "include", //use credentials ="include"
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setMyBids(data);
+  //       setMyBidsLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log("error", err);
+  //     });
+  // }, [email]);
+
   useEffect(() => {
-    fetch(`http://localhost:4000/bids?email=${email}`, {
-      credentials: "include", //use credentials ="include"
-    })
-      .then((res) => res.json())
+    axiosInstanseSecure
+      .get(`/bids?email=${email}`)
       .then((data) => {
-        setMyBids(data);
+        setMyBids(data.data);
         setMyBidsLoading(false);
       })
       .catch((err) => {
-        console.log("error", err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err,
+        });
+        setMyBidsLoading(false);
       });
-  }, [email]);
+  }, [axiosInstanseSecure, email]);
+
   if (myBidsLoading) return <Loading />;
 
   if (myBids.length < 1) {

@@ -1,12 +1,16 @@
 import React, { use } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../Context/Context";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
-  const { user, signOutUSer, loading } = use(AuthContext);
+  const { user, signOutUSer } = use(AuthContext);
   const handleLogOut = () => {
     signOutUSer().then(() => {
-      console.log("Logout successfull");
+      Swal.fire({
+        title: "Logout successfull",
+        icon: "success",
+      });
     });
   };
   return (
@@ -83,13 +87,7 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {loading && (
-        <div className="navbar-end space-x-3.5">
-          <span className="loading loading-spinner loading-sm text-primary"></span>
-        </div>
-      )}
-
-      {!user && !loading && (
+      {!user && (
         <div className="navbar-end space-x-3.5">
           <Link
             to={"/auth/login"}

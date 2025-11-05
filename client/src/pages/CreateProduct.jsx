@@ -3,8 +3,10 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const CreateProduct = () => {
+  const axiosSecureInstance = useAxiosSecure();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [formData, setFormData] = useState({
@@ -48,26 +50,25 @@ const CreateProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:4000/products", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
+    axiosSecureInstance
+      .post("/products", formData)
       .then((data) => {
-        console.log(data);
-        Swal.fire({
-          title: "Successfully created product!",
-          icon: "success",
-          draggable: true,
-        });
-        resetFields();
-        navigate("/my-products");
+        if (data.data.insertedId) {
+          Swal.fire({
+            title: "Successfully created product!",
+            icon: "success",
+            draggable: true,
+          });
+          resetFields();
+          navigate("/my-products");
+        }
       })
       .catch((err) => {
-        console.log(err.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.message,
+        });
       });
   };
 

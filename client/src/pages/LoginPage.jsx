@@ -1,10 +1,12 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Context/Context";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { signInWithGoogle, SignInUSer } = use(AuthContext);
+  const [loadingLogin, setLoadingLogin] = useState(false);
+  const { signInWithGoogle, SignInUSer, authError, setAuthError } =
+    use(AuthContext);
   const handleGoogleSignIn = () => {
     signInWithGoogle().then((res) => {
       fetch("http://localhost:4000/users", {
@@ -20,16 +22,19 @@ const LoginPage = () => {
 
   const handleLoginAccount = (e) => {
     e.preventDefault();
+    setLoadingLogin(true);
+    setAuthError("");
     const email = e.target.email.value.trim();
     const password = e.target.password.value.trim();
     SignInUSer(email, password)
-      .then((res) => {
-        console.log(res.user);
+      .then(() => {
+        setLoadingLogin(false);
         e.target.reset();
         navigate("/");
       })
       .catch((err) => {
-        console.log(err.message);
+        setLoadingLogin(false);
+        setAuthError(err.message);
       });
   };
 
@@ -71,8 +76,14 @@ const LoginPage = () => {
               </Link>
             </div>
 
+            <p className="text-error">{authError}</p>
+
             <button className="btn bg-primary text-base-100 rounded-lg text-lg h-12">
-              Sign In
+              {loadingLogin ? (
+                <span className="loading loading-spinner loading-xl text-base-100"></span>
+              ) : (
+                <span>Sign In</span>
+              )}
             </button>
           </form>
           <div className="flex items-center justify-between my-5">
