@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 // // // for jwt token store in http only cookie method:
 // const axiosInstance = axios.create({
-//   baseURL: "http://localhost:4000",
+//   baseURL: "https://smart-deals-api-server-nur-nayeem.vercel.app",
 //   withCredentials: true,
 // });
 
@@ -14,7 +14,7 @@ import { useEffect } from "react";
 
 //// for firebase or jwt token store in local storage method:
 // const axiosInstance = axios.create({
-//   baseURL: "http://localhost:4000",
+//   baseURL: "https://smart-deals-api-server-nur-nayeem.vercel.app",
 // });
 
 // const useAxiosSecure = () => {
@@ -32,7 +32,7 @@ import { useEffect } from "react";
 // };
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "https://smart-deals-api-server-nur-nayeem.vercel.app",
 });
 
 const useAxiosSecure = () => {

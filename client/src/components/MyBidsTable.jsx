@@ -15,7 +15,9 @@ const MyBidsTable = ({ myBids, setMyBids }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:4000/bids/${id}`)
+          .delete(
+            `https://smart-deals-api-server-nur-nayeem.vercel.app/bids/${id}`
+          )
           .then(() => {
             const filterdBid = myBids.filter((bid) => bid._id !== id);
             setMyBids(filterdBid);

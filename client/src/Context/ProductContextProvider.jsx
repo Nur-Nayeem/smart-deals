@@ -5,7 +5,7 @@ const ProductContextProvider = ({ children }) => {
   const [productsLoading, setProductsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:4000/products")
+    fetch("https://smart-deals-api-server-nur-nayeem.vercel.app/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);

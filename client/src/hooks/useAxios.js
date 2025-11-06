@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "https://smart-deals-api-server-nur-nayeem.vercel.app",
 });
 
 const useAxios = () => {

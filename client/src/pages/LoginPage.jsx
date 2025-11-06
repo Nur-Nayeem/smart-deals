@@ -9,7 +9,7 @@ const LoginPage = () => {
     use(AuthContext);
   const handleGoogleSignIn = () => {
     signInWithGoogle().then((res) => {
-      fetch("http://localhost:4000/users", {
+      fetch("https://smart-deals-api-server-nur-nayeem.vercel.app/users", {
         method: "POST",
         headers: {
           "content-type": "application/json",

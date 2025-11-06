@@ -18,7 +18,7 @@ const MyBids = () => {
 
   ////use this for firebasse acces token and jwt raw token with localstorage for example:
   // useEffect(() => {
-  //   fetch(`http://localhost:4000/bids?email=${email}`, {
+  //   fetch(`https://smart-deals-api-server-nur-nayeem.vercel.app/bids?email=${email}`, {
   //     headers: {
   //       authorization: `Bearer ${jwtTokenSendFromLocalStorage}`,
   //     },
@@ -32,7 +32,7 @@ const MyBids = () => {
 
   // //in http only cookie methdo with fetch
   // useEffect(() => {
-  //   fetch(`http://localhost:4000/bids?email=${email}`, {
+  //   fetch(`https://smart-deals-api-server-nur-nayeem.vercel.app/bids?email=${email}`, {
   //     credentials: "include", //use credentials ="include"
   //   })
   //     .then((res) => res.json())

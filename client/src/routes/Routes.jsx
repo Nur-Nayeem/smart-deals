@@ -33,7 +33,9 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:4000/products/${params.id}`),
+          fetch(
+            `https://smart-deals-api-server-nur-nayeem.vercel.app/products/${params.id}`
+          ),
       },
       {
         path: "create-product",
@@ -59,7 +61,9 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:4000/products/${params.id}`),
+          fetch(
+            `https://smart-deals-api-server-nur-nayeem.vercel.app/products/${params.id}`
+          ),
       },
 
       {

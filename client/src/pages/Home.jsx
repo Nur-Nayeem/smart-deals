@@ -5,7 +5,7 @@ import Loading from "../components/Loading";
 import axios from "axios";
 
 const latestProductsPromise = axios
-  .get("http://localhost:4000/latest-products")
+  .get("https://smart-deals-api-server-nur-nayeem.vercel.app/latest-products")
   .then((data) => data.data);
 
 const LatestProducts = () => {

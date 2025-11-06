@@ -1,16 +1,13 @@
 import React, { useContext } from "react";
 import ProductCard from "../components/ProductsComponents/ProductCard";
 import { ProductsContext } from "../Context/Context";
+import Loading from "../components/Loading";
 
 const Products = () => {
   const { products, productsLoading } = useContext(ProductsContext);
 
   if (productsLoading) {
-    return (
-      <div className="text-center text-3xl font-bold text-secondary my-4">
-        <span className="loading loading-spinner loading-sm text-primary"></span>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
