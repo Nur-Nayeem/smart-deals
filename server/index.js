@@ -127,7 +127,7 @@ const verifyTokenWithJwt = async (req, res, next) => {
 
 async function run() {
   try {
-    // await client.connect();
+    await client.connect();
 
     const productDB = client.db("smart_db");
     const productsCollection = productDB.collection("products");
@@ -213,7 +213,7 @@ async function run() {
       res.send(result);
     });
 
-    app.delete("/products/:id", async (req, res) => {
+    app.delete("/products/:id", verifyTokenWithFirebase, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await productsCollection.deleteOne(query);
@@ -241,11 +241,9 @@ async function run() {
       if (email) {
         query.buyer_email = email;
       }
-
       if (email !== req.token_email) {
         res.status(403).send({ message: "Forbidden acces" });
       }
-
       const cursor = bidsCollection.find(query);
       const bids = await cursor.toArray();
 
@@ -255,9 +253,9 @@ async function run() {
         const product = await productsCollection.findOne({
           _id: new ObjectId(bid.productId),
         });
-
         result.push({
           ...bid,
+          productImage: product?.image,
           productTitle: product?.title || "Unknown Product",
           price_min: product?.price_min || 0,
           price_max: product?.price_max || 0,
