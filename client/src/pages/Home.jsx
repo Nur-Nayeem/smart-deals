@@ -15,7 +15,7 @@ const LatestProducts = () => {
       <h2 className="text-center text-3xl font-bold text-secondary my-4">
         Recent <span className="text-primary">Products</span>
       </h2>
-      <div className="grid grid-cols-3 gap-2.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
         {latestProducts.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
