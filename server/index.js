@@ -1,10 +1,20 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 // const cookieParser = require("cookie-parser"); //for http only cookie
 const admin = require("firebase-admin");
 
 // const serviceAccount = require("./smartDealFirebaseSecret.json");
 const jwt = require("jsonwebtoken");
+
+const port = process.env.PORT || 3000;
+
+const app = express();
+
+const uri = process.env.MONGODB_URI;
+
+app.use(cors());
+app.use(express.json());
 
 // for vercel deployment:
 const decoded = Buffer.from(
@@ -15,14 +25,6 @@ const serviceAccount = JSON.parse(decoded);
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
-require("dotenv").config();
-
-const port = process.env.PORT || 3000;
-
-const app = express();
-
-const uri = process.env.MONGODB_URI;
-
 //meddilewaire
 // app.use(
 //   cors({
@@ -30,9 +32,6 @@ const uri = process.env.MONGODB_URI;
 //     credentials: true, //for http only cookie
 //   })
 // );
-
-app.use(cors());
-app.use(express.json());
 
 // app.use(cookieParser()); // for http only cookie
 
@@ -128,7 +127,7 @@ const verifyTokenWithJwt = async (req, res, next) => {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
 
     const productDB = client.db("smart_db");
     const productsCollection = productDB.collection("products");
