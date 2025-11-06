@@ -1,8 +1,10 @@
-import axios from "axios";
 import React from "react";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const MyBidsTable = ({ myBids, setMyBids }) => {
+  console.log(myBids);
+  const secureAxiosIstance = useAxiosSecure();
   const handleBidDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -14,13 +16,16 @@ const MyBidsTable = ({ myBids, setMyBids }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete(
-            `https://smart-deals-api-server-nur-nayeem.vercel.app/bids/${id}`
-          )
+        secureAxiosIstance
+          .delete(`/bids/${id}`)
           .then(() => {
             const filterdBid = myBids.filter((bid) => bid._id !== id);
             setMyBids(filterdBid);
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your Bid has been deleted.",
+              icon: "success",
+            });
           })
           .catch((err) => {
             Swal.fire({
@@ -29,11 +34,6 @@ const MyBidsTable = ({ myBids, setMyBids }) => {
               text: err.message,
             });
           });
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your Bid has been deleted.",
-          icon: "success",
-        });
       }
     });
   };
@@ -60,8 +60,7 @@ const MyBidsTable = ({ myBids, setMyBids }) => {
                   <div className="avatar">
                     <div className="mask mask-squircle h-12 w-12">
                       <img
-                        src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                        alt="Product"
+                        src={bid?.productImage}
                         onError={(e) => {
                           e.currentTarget.src =
                             "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";

@@ -50,6 +50,8 @@ const MyBids = () => {
       .get(`/bids?email=${email}`)
       .then((data) => {
         setMyBids(data.data);
+        console.log(data.data);
+
         setMyBidsLoading(false);
       })
       .catch((err) => {

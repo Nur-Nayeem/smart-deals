@@ -182,6 +182,7 @@ const ProductDetails = () => {
         <h2> Bids For This Products: {bids.length}</h2>
         <div className="mt-10">
           <BidsTable
+            image={image}
             bids={bids}
             title={title}
             price_max={price_max}

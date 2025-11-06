@@ -1,6 +1,6 @@
 import React from "react";
 
-const BidsTable = ({ bids, title, price_max, price_min }) => {
+const BidsTable = ({ bids, title, image, price_max, price_min }) => {
   return (
     <div className="overflow-x-auto bg-base-100 rounded-lg">
       <table className="table">
@@ -22,7 +22,7 @@ const BidsTable = ({ bids, title, price_max, price_min }) => {
                   <div className="avatar">
                     <div className="mask mask-squircle h-12 w-12">
                       <img
-                        src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                        src={image}
                         alt="Product"
                         onError={(e) => {
                           e.currentTarget.src =

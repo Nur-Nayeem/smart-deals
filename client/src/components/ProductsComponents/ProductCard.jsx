@@ -4,10 +4,18 @@ import { Link } from "react-router";
 const ProductCard = ({ product }) => {
   return (
     <div className="p-4 bg-base-100 flex flex-col gap-2.5">
-      <img
-        src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-        alt=""
-      />
+      <figure className="h-80">
+        <img
+          className="w-full h-80"
+          src={product?.image}
+          alt={product.title}
+          onError={(e) => {
+            e.currentTarget.className = "w-sm";
+            e.currentTarget.src =
+              "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";
+          }}
+        />
+      </figure>
       <p>{product.title}</p>
       <span className="text-primary text-lg font-medium">
         $ {product.price_min} - {product.price_max}
