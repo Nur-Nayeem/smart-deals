@@ -127,7 +127,7 @@ const verifyTokenWithJwt = async (req, res, next) => {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
 
     const productDB = client.db("smart_db");
     const productsCollection = productDB.collection("products");
@@ -197,7 +197,10 @@ async function run() {
 
     app.post("/products", async (req, res) => {
       const newProduct = req.body;
-      newProduct.status = "pending";
+      if (newProduct) {
+        newProduct.created_at = new Date().toISOString();
+        newProduct.status = "pending";
+      }
       const result = await productsCollection.insertOne(newProduct);
       res.send(result);
     });
