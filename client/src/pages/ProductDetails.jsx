@@ -62,15 +62,17 @@ const ProductDetails = () => {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Left - Image + Description */}
           <div>
-            <img
-              src={image}
-              alt={title}
-              onError={(e) => {
-                e.currentTarget.src =
-                  "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";
-              }}
-              className="w-full h-80 object-cover rounded-xl shadow-md"
-            />
+            <figure className="w-full h-96">
+              <img
+                src={image}
+                alt={title}
+                onError={(e) => {
+                  e.currentTarget.src =
+                    "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";
+                }}
+                className="rounded-xl shadow-md h-full w-full"
+              />
+            </figure>
 
             <div className="bg-white rounded-xl p-5 mt-6 shadow-md">
               <h2 className="text-lg font-semibold mb-3">
