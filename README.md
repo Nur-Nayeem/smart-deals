@@ -61,16 +61,15 @@ client:
 - react-icons
 - axios
 - SweetAlert2
-- dotenv
 
 server:
-
 - cors
 - express
 - firebase-admin
 - jsonwebtoken
 - mongodb
 - jsonwebtoken (if JWT used)
+- dotenv
 
 ---
 
